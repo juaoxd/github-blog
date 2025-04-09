@@ -78,3 +78,51 @@ export const ProfileInfo = styled.div`
     }
   }
 `
+
+export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 4.5rem;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h3 {
+      font-size: 1.125rem;
+      font-weight: bold;
+      color: ${(props) => props.theme['base-subtitle']};
+    }
+
+    span {
+      font-size: 0.875rem;
+      color: ${(props) => props.theme['base-span']};
+    }
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+
+    background-color: ${(props) => props.theme['base-input']};
+    color: ${(props) => props.theme['base-text']};
+
+    border: 1px solid ${(props) => props.theme['base-border']};
+    border-radius: 6px;
+
+    &::placeholder {
+      color: ${(props) => props.theme['base-label']};
+    }
+
+    &:active {
+      border: 1px solid ${(props) => props.theme.blue};
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+`

@@ -1,5 +1,6 @@
 import {
   HomeContainer,
+  InputContainer,
   Profile,
   ProfileContent,
   ProfileInfo,
@@ -88,6 +89,15 @@ export function Home() {
           </ProfileInfo>
         </ProfileContent>
       </Profile>
+
+      <InputContainer>
+        <div>
+          <h3>Publicações</h3>
+          <span>6 publicações</span>
+        </div>
+
+        <input type="text" placeholder="Buscar conteúdo" />
+      </InputContainer>
     </HomeContainer>
   )
 }
