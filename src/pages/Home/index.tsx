@@ -13,39 +13,77 @@ import {
   faUserGroup,
   faArrowUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons'
+import { useEffect, useState } from 'react'
+import { api } from '../../lib/axios'
+
+interface ProfileData {
+  name: string
+  avatarUrl: string
+  login: string
+  company: string
+  bio: string
+  followers: number
+  htmlUrl: string
+}
 
 export function Home() {
+  const [profileData, setProfileData] = useState<ProfileData>()
+
+  async function fetchProfileData() {
+    const response = await api.get('/users/juaoxd')
+
+    const {
+      name,
+      avatar_url: avatarUrl,
+      login,
+      company,
+      bio,
+      followers,
+      html_url: htmlUrl,
+    } = response.data
+
+    setProfileData({
+      name,
+      avatarUrl,
+      login,
+      company,
+      bio,
+      followers,
+      htmlUrl,
+    })
+  }
+
+  useEffect(() => {
+    fetchProfileData()
+  }, [])
+
   return (
     <HomeContainer>
       <Profile>
-        <a href="">
+        <a href={profileData?.htmlUrl} target="_blank">
           GitHub
           <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
         </a>
-        <img src="https://github.com/juaoxd.png" alt="" />
+        <img src={profileData?.avatarUrl} alt="" />
         <ProfileContent>
           <TextContent>
-            <ProfileTitle>Joao Gabriel</ProfileTitle>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet,
-              repudiandae. Nemo voluptatum esse magni consectetur, animi natus,
-              nihil deleniti ullam atque nobis laborum explicabo eius dolorum
-              quos consequuntur ratione eaque.
-            </p>
+            <ProfileTitle>{profileData?.name}</ProfileTitle>
+            <p>{profileData?.bio}</p>
           </TextContent>
 
           <ProfileInfo>
             <span>
               <FontAwesomeIcon icon={faGithub} />
-              juaoxd
+              {profileData?.login}
             </span>
             <span>
               <FontAwesomeIcon icon={faBuilding} />
-              Unemployed
+              {profileData?.company}
             </span>
+
             <span>
               <FontAwesomeIcon icon={faUserGroup} />
-              32 seguidores
+              {profileData?.followers} seguidores
             </span>
           </ProfileInfo>
         </ProfileContent>
