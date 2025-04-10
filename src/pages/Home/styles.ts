@@ -126,3 +126,46 @@ export const InputContainer = styled.div`
     }
   }
 `
+
+export const CardsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2rem;
+  margin: 3rem auto;
+`
+
+export const Card = styled.div`
+  background-color: ${(props) => props.theme['base-post']};
+  padding: 2rem;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  box-sizing: content-box;
+  border: 2px solid transparent;
+
+  &:hover {
+    cursor: pointer;
+    border-color: ${(props) => props.theme['base-label']};
+  }
+
+  div {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+
+    h3 {
+      font-size: 1.25rem;
+      color: ${(props) => props.theme['base-title']};
+      flex: 1;
+      word-break: break-word;
+    }
+
+    span {
+      color: ${(props) => props.theme['base-span']};
+      font-size: 0.875rem;
+    }
+  }
+`
