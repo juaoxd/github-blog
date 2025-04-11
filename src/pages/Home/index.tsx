@@ -18,6 +18,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/pt-br'
+
+dayjs.extend(relativeTime)
+dayjs.locale('pt-br')
 
 interface ProfileData {
   name: string
@@ -29,8 +35,21 @@ interface ProfileData {
   htmlUrl: string
 }
 
+interface Post {
+  number: number
+  title: string
+  body: string
+  created_at: string
+}
+
+interface Posts {
+  totalCount: number
+  items: Post[]
+}
+
 export function Home() {
   const [profileData, setProfileData] = useState<ProfileData>()
+  const [posts, setPosts] = useState<Posts>()
 
   async function fetchProfileData() {
     const response = await api.get('/users/juaoxd')
@@ -56,8 +75,21 @@ export function Home() {
     })
   }
 
+  async function fetchPosts() {
+    const response = await api.get('/search/issues', {
+      params: {
+        q: 'repo:juaoxd/github-blog',
+      },
+    })
+
+    const { total_count: totalCount, items } = response.data
+
+    setPosts({ totalCount, items })
+  }
+
   useEffect(() => {
     fetchProfileData()
+    fetchPosts()
   }, [])
 
   return (
@@ -95,85 +127,25 @@ export function Home() {
       <InputContainer>
         <div>
           <h3>Publicações</h3>
-          <span>6 publicações</span>
+          <span>{posts?.totalCount} publicações</span>
         </div>
 
         <input type="text" placeholder="Buscar conteúdo" />
       </InputContainer>
 
       <CardsContainer>
-        <Card>
-          <div>
-            <h3>JavaScript data types and data structures</h3>
-            <span>Há 1 dia</span>
-          </div>
+        {posts?.items.map((post) => {
+          return (
+            <Card key={post.number} to={`/posts/${post.number}`}>
+              <div>
+                <h3>{post.title}</h3>
+                <span>{dayjs(post.created_at).fromNow()}</span>
+              </div>
 
-          <p>
-            Programming languages all have built-in data structures, but these
-            often differ from one language to another. This article attempts to
-            list the built-in data structures available in...
-          </p>
-        </Card>
-        <Card>
-          <div>
-            <h3>JavaScript data types and data structures</h3>
-            <span>Há 1 dia</span>
-          </div>
-
-          <p>
-            Programming languages all have built-in data structures, but these
-            often differ from one language to another. This article attempts to
-            list the built-in data structures available in...
-          </p>
-        </Card>
-        <Card>
-          <div>
-            <h3>JavaScript data types and data structures</h3>
-            <span>Há 1 dia</span>
-          </div>
-
-          <p>
-            Programming languages all have built-in data structures, but these
-            often differ from one language to another. This article attempts to
-            list the built-in data structures available in...
-          </p>
-        </Card>
-        <Card>
-          <div>
-            <h3>JavaScript data types and data structures</h3>
-            <span>Há 1 dia</span>
-          </div>
-
-          <p>
-            Programming languages all have built-in data structures, but these
-            often differ from one language to another. This article attempts to
-            list the built-in data structures available in...
-          </p>
-        </Card>
-        <Card>
-          <div>
-            <h3>JavaScript data types and data structures</h3>
-            <span>Há 1 dia</span>
-          </div>
-
-          <p>
-            Programming languages all have built-in data structures, but these
-            often differ from one language to another. This article attempts to
-            list the built-in data structures available in...
-          </p>
-        </Card>
-        <Card>
-          <div>
-            <h3>JavaScript data types and data structures</h3>
-            <span>Há 1 dia</span>
-          </div>
-
-          <p>
-            Programming languages all have built-in data structures, but these
-            often differ from one language to another. This article attempts to
-            list the built-in data structures available in...
-          </p>
-        </Card>
+              <p>{post.body?.substring(0, 80).trimEnd().concat('...')}</p>
+            </Card>
+          )
+        })}
       </CardsContainer>
     </HomeContainer>
   )

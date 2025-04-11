@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 
 export const HomeContainer = styled.main`
   width: 100%;
@@ -134,10 +135,13 @@ export const CardsContainer = styled.div`
   margin: 3rem auto;
 `
 
-export const Card = styled.div`
+export const Card = styled(NavLink)`
   background-color: ${(props) => props.theme['base-post']};
   padding: 2rem;
   border-radius: 10px;
+
+  text-decoration: none;
+  color: ${(props) => props.theme['base-text']};
 
   display: flex;
   flex-direction: column;
