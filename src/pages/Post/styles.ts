@@ -57,3 +57,11 @@ export const PostInfo = styled.div`
     color: ${(props) => props.theme['base-span']};
   }
 `
+
+export const PostContent = styled.div`
+  padding: 2.5rem 2rem;
+
+  ul {
+    margin-left: 40px;
+  }
+`
